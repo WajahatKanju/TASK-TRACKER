@@ -5,20 +5,21 @@ import { Task } from 'src/Task';
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.css']
+  styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
-
   tasks: Task[] = [];
 
-  constructor(private _taskService: TaskService) { }
+  constructor(private _taskService: TaskService) {}
 
   ngOnInit(): void {
-   this._taskService.getTask().subscribe((tasks)=> this.tasks=tasks);
-   
+    this._taskService.getTask().subscribe((tasks) => (this.tasks = tasks));
   }
   deleteTask(task: Task): void {
-    console.log(`${task}`);
+    this._taskService
+      .deleteTask(task)
+      .subscribe(
+        () => (this.tasks = this.tasks.filter((t) => t.id !== task.id))
+      );
   }
-
 }
